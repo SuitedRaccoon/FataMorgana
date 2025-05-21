@@ -2,6 +2,7 @@
 Repositório dedicado ao grupo Fata Morgana para confecção de aplicativos ao longo do curso de Ciência da Computação do Centro Universitário UDF.
 
 ## Morganum
+![logotipo do Morganum: letras escritas à mão com o primeiro 'M' estilizado parecendo um livro aberto.](Morganum/static/assets/morganum_logo.png)
  Aplicação web simulando um sistema de uma livraria. O sistema será apresentado como trabalho final de três matérias simultaneamente: Estrutura de Dados; Banco de Dados; e Programação Orientada a Objetos.
  ### Features:
  * Sistema de login para clientes e funcionários;
