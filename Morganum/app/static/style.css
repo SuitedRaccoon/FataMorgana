@@ -1,0 +1,8 @@
+/* Estilo personalizado para manter as duas linhas */
+.two-line-navbar {
+    display: block;
+}
+
+.navbar-line {
+    width: 100%;
+}
