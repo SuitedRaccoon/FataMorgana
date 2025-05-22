@@ -9,14 +9,12 @@ produto_bp = Blueprint('produto', __name__, url_prefix='/produtos')
 def index():
     return render_template('index.html')
 
-produto_routes = Blueprint('produto', __name__)
-
-@produto_routes.route('/produtos')
+@produto_bp.route('/')
 def listar_produtos():
     produtos = Produto.query.all()
     return render_template('produtos.html', produtos=produtos)
 
-@produto_routes.route('/produtos/novo', methods=['GET', 'POST'])
+@produto_bp.route('/novo', methods=['GET', 'POST'])
 def novo_produto():
     if request.method == 'POST':
         nome = request.form['nome']
@@ -33,7 +31,7 @@ def novo_produto():
     
     return render_template('novo_produto.html')
 
-@produto_routes.route('/produtos/editar/<int:id>', methods=['GET', 'POST'])
+@produto_bp.route('/editar/<int:id>', methods=['GET', 'POST'])
 def editar_produto(id):
     produto = Produto.query.get_or_404(id)
     
@@ -49,7 +47,7 @@ def editar_produto(id):
     
     return render_template('editar_produto.html', produto=produto)
 
-@produto_routes.route('/produtos/excluir/<int:id>')
+@produto_bp.route('/excluir/<int:id>')
 def excluir_produto(id):
     produto = Produto.query.get_or_404(id)
     db.session.delete(produto)
