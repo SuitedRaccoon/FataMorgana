@@ -7,3 +7,4 @@
  * *methods.py*: arquivo contendo todos os métodos de orientação a objetos utilizados na aplicação principal;
  * *morganum.db*: arquivo de banco de dados principal do Morganum.
  
+![ícone do Morganum: 'M' estilizado parecendo um livro aberto.](app/static/assets/morganum_icon.png)
