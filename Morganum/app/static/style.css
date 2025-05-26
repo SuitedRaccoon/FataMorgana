@@ -1,57 +1,11 @@
-/* Estilos gerais */
-body {
-    background-color: #f8f9fa;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
+/* Estilo personalizado para manter as duas linhas */
 .two-line-navbar {
     display: block;
-    box-shadow: 0 2px 4px rgba(0,0,0,.1);
 }
 
 .navbar-line {
     width: 100%;
-    background-color: #fff;
 }
 
-/* Cards de produtos */
-.card {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    height: 100%;
-}
 
-.card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,.1);
-}
 
-.card-img-top {
-    height: 200px;
-    object-fit: contain;
-    padding: 20px;
-    background-color: #f8f9fa;
-}
-
-/* Formulários */
-.form-control:focus {
-    border-color: #6c757d;
-    box-shadow: 0 0 0 0.25rem rgba(108, 117, 125, 0.25);
-}
-
-/* Botões */
-.btn-primary {
-    background-color: #6c757d;
-    border-color: #6c757d;
-}
-
-.btn-primary:hover {
-    background-color: #5a6268;
-    border-color: #545b62;
-}
-
-/* Responsividade */
-@media (max-width: 768px) {
-    .navbar-brand img {
-        height: 70px !important;
-    }
-}

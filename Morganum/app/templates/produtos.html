@@ -1,90 +1,22 @@
 {% extends "base.html" %}
 
-{% block title %}Nossos Livros{% endblock %}
+{% block title %}Nossos Produtos{% endblock %}
 
 {% block content %}
-<<<<<<< HEAD
-<div class="container">
-  <div class="row mb-4">
-    <div class="col-md-6">
-      <h1>Nossos Livros</h1>
-    </div>
-    <div class="col-md-6 text-md-end">
-      <form class="d-flex" method="GET" action="{{ url_for('produto.listar_produtos') }}">
-        <input class="form-control me-2" type="search" placeholder="Pesquisar livros..." name="q">
-        <button class="btn btn-outline-secondary" type="submit">Buscar</button>
-      </form>
-    </div>
-  </div>
-  
-  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-    {% for livro in livros %}
-    <div class="col">
-      <div class="card h-100">
-        <img src="{{ url_for('static', filename='uploads/livros/' ~ livro.isbn_13 ~ '.jpg') }}" 
-             class="card-img-top" 
-             alt="{{ livro.titulo }}">
-             
-          <h5 class="card-title">{{ livro.titulo }}</h5>
-          <p class="card-text text-muted">{{ livro.autor }}</p>
-          <p class="card-text">{{ livro.descricao|truncate(100) }}</p>
-          <div class="d-flex justify-content-between align-items-center">
-            <span class="text-success fw-bold">R$ {{ "%.2f"|format(livro.preco_livro) }}</span>
-            <span class="badge bg-secondary">{{ livro.genero_literario.nome }}</span>
-          </div>
-        </div>
-        <div class="card-footer bg-white">
-          <div class="d-grid gap-2">
-            <a href="{{ url_for('produto.detalhes_livro', isbn=livro.isbn_13) }}" class="btn btn-outline-primary">Detalhes</a>
-=======
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1>Catálogo de Livros</h1>
-    <a href="{{ url_for('produto.novo_produto') }}" class="btn btn-success">
-      <i class="bi bi-plus-lg"></i> Adicionar Livro
-    </a>
-  </div>
+  <h1>Nossos Produtos</h1>
   
   <div class="row">
-    {% for livro in produtos %}
+    {% for produto in produtos %}
     <div class="col-md-4 mb-4">
-      <div class="card h-100">
-        {% if livro.imagem %}
-        <img src="{{ url_for('static', filename='uploads/' + livro.imagem) }}" class="card-img-top" alt="{{ livro.titulo }}">
-        {% endif %}
-        <div class="card-body d-flex flex-column">
-          <h5 class="card-title">{{ livro.titulo }}</h5>
-          <h6 class="card-subtitle mb-2 text-muted">{{ livro.autor }}</h6>
-          <p class="card-text flex-grow-1">{{ livro.descricao|truncate(150) }}</p>
-          
-          <div class="mb-2">
-            <span class="badge bg-primary">{{ livro.genero.nome if livro.genero else 'Sem gênero' }}</span>
-            <span class="badge bg-secondary">{{ livro.editora.nome if livro.editora else 'Sem editora' }}</span>
-          </div>
-          
-          <div class="d-flex justify-content-between align-items-center">
-            <div>
-              <p class="text-success fw-bold mb-0">R$ {{ "%.2f"|format(livro.preco) }}</p>
-              <small class="text-muted">Estoque: {{ livro.estoque }}</small>
-            </div>
-            <div class="btn-group">
-              <a href="{{ url_for('produto.editar_produto', id=livro.id) }}" class="btn btn-sm btn-outline-primary">
-                <i class="bi bi-pencil"></i>
-              </a>
-              <a href="{{ url_for('produto.excluir_produto', id=livro.id) }}" class="btn btn-sm btn-outline-danger" 
-                 onclick="return confirm('Tem certeza que deseja excluir este livro?')">
-                <i class="bi bi-trash"></i>
-              </a>
-            </div>
->>>>>>> 2e91aa394c2944f2798d6141de9b12aee6bae13e
-          </div>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">{{ produto.nome }}</h5>
+          <p class="card-text">{{ produto.descricao }}</p>
+          <p class="text-success fw-bold">R$ {{ "%.2f"|format(produto.preco) }}</p>
+          <a href="#" class="btn btn-primary">Adicionar ao Carrinho</a>
         </div>
       </div>
     </div>
-    {% else %}
-    <div class="col-12">
-      <div class="alert alert-info">Nenhum livro cadastrado ainda.</div>
-    </div>
     {% endfor %}
   </div>
-</div>
 {% endblock %}
