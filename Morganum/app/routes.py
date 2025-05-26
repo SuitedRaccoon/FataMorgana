@@ -1,21 +1,26 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash
-from .models import Produto
+from .models import Livro as Produto
 from . import db
 
+# Blueprint principal
 main_bp = Blueprint('main', __name__)
+
+# Blueprint de produtos com prefixo
 produto_bp = Blueprint('produto', __name__, url_prefix='/produtos')
 
+# Rota principal
 @main_bp.route('/')
 def index():
     return render_template('index.html')
 
+# Rotas de produtos
 @produto_bp.route('/')
-def listar_produtos():
+def listar():
     produtos = Produto.query.all()
     return render_template('produtos.html', produtos=produtos)
 
 @produto_bp.route('/novo', methods=['GET', 'POST'])
-def novo_produto():
+def novo_produto():  # Nome original mantido
     if request.method == 'POST':
         nome = request.form['nome']
         descricao = request.form['descricao']
@@ -27,10 +32,11 @@ def novo_produto():
         db.session.commit()
         
         flash('Produto criado com sucesso!', 'success')
-        return redirect(url_for('produto.listar_produtos'))
+        return redirect(url_for('produto.listar_produtos'))  # Usando o nome original
     
     return render_template('novo_produto.html')
 
+# ... (outras rotas de produto)
 @produto_bp.route('/editar/<int:id>', methods=['GET', 'POST'])
 def editar_produto(id):
     produto = Produto.query.get_or_404(id)
@@ -55,3 +61,4 @@ def excluir_produto(id):
     
     flash('Produto excluído com sucesso!', 'success')
     return redirect(url_for('produto.listar_produtos'))
+

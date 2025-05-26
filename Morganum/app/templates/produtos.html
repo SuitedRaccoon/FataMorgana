@@ -1,18 +1,24 @@
 {% extends "base.html" %}
 
-{% block title %}Nossos Produtos{% endblock %}
+{% block title %}Nossos Livros{% endblock %}
 
 {% block content %}
-  <h1>Nossos Produtos</h1>
+  <h1>Nossos Livros</h1>
   
   <div class="row">
-    {% for produto in produtos %}
+    {% for livro in produtos %}
     <div class="col-md-4 mb-4">
-      <div class="card">
+      <div class="card h-100">
         <div class="card-body">
-          <h5 class="card-title">{{ produto.nome }}</h5>
-          <p class="card-text">{{ produto.descricao }}</p>
-          <p class="text-success fw-bold">R$ {{ "%.2f"|format(produto.preco) }}</p>
+          <h5 class="card-title">{{ livro.titulo }}</h5>
+          <h6 class="card-subtitle mb-2 text-muted">{{ livro.autor }}</h6>
+          <p class="card-text">{{ livro.descricao|truncate(100) }}</p>
+          <div class="mb-2">
+            <span class="badge bg-primary">{{ livro.genero.nome }}</span>
+            <span class="badge bg-secondary">{{ livro.editora.nome }}</span>
+          </div>
+          <p class="text-success fw-bold">R$ {{ "%.2f"|format(livro.preco) }}</p>
+          <p class="text-muted">Estoque: {{ livro.estoque }}</p>
           <a href="#" class="btn btn-primary">Adicionar ao Carrinho</a>
         </div>
       </div>
