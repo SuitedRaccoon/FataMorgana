@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 from . import db
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+=======
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+import os
+>>>>>>> 2e91aa394c2944f2798d6141de9b12aee6bae13e
 
 class Usuario(db.Model, UserMixin):
     __tablename__ = 'usuario'
@@ -29,8 +36,18 @@ class Usuario(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.senha, password)
 
+<<<<<<< HEAD
 class Livro(db.Model):
     __tablename__ = 'livro'
+=======
+def create_app():
+    app = Flask(__name__)
+    
+    # Configuração do banco de dados
+    app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL') or \
+        f"mysql+pymysql://{os.getenv('DB_USER')}:{os.getenv('DB_PASSWORD')}@{os.getenv('DB_HOST')}/{os.getenv('DB_NAME')}"
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+>>>>>>> 2e91aa394c2944f2798d6141de9b12aee6bae13e
     
     isbn_13 = db.Column(db.String(18), primary_key=True)
     titulo = db.Column(db.String(255), nullable=False)
@@ -44,5 +61,18 @@ class Livro(db.Model):
     editora = db.relationship('Editora', backref='livros')
     genero_literario = db.relationship('GeneroLiterario', backref='livros')
     
+<<<<<<< HEAD
     def imagem_url(self):
         return f"uploads/livros/{self.isbn_13}.jpg"
+=======
+    # Registra blueprints
+    from .routes import main_bp, produto_bp
+    app.register_blueprint(main_bp)
+    app.register_blueprint(produto_bp)
+    
+    # Importa models explicitamente
+    from . import models
+    
+    return app
+
+>>>>>>> 2e91aa394c2944f2798d6141de9b12aee6bae13e
