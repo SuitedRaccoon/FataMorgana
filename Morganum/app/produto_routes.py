@@ -1,53 +1,25 @@
-# app/produto_routes.py
-from flask import Blueprint, render_template, redirect, url_for, request, flash
-from .models import Produto
-from . import db
-
-produto_routes = Blueprint('produto', __name__)
-
-@produto_routes.route('/produtos')
+@produto_bp.route('/produtos')
 def listar_produtos():
-    produtos = Produto.query.all()
-    return render_template('produtos.html', produtos=produtos)
+    search_query = request.args.get('q', '')
+    page = request.args.get('page', 1, type=int)
+    per_page = 9
+    
+    query = Livro.query
+    
+    if search_query:
+        query = query.filter(
+            db.or_(
+                Livro.titulo.ilike(f'%{search_query}%'),
+                Livro.autor.ilike(f'%{search_query}%'),
+                Livro.descricao.ilike(f'%{search_query}%')
+            )
+        )
+    
+    livros = query.join(GeneroLiterario).paginate(page=page, per_page=per_page)
+    
+    return render_template('produtos.html', livros=livros, search_query=search_query)
 
-@produto_routes.route('/produtos/novo', methods=['GET', 'POST'])
-def novo_produto():
-    if request.method == 'POST':
-        nome = request.form['nome']
-        descricao = request.form['descricao']
-        preco = float(request.form['preco'])
-        quantidade = int(request.form['quantidade'])
-        
-        novo_produto = Produto(nome=nome, descricao=descricao, preco=preco, quantidade=quantidade)
-        db.session.add(novo_produto)
-        db.session.commit()
-        
-        flash('Produto criado com sucesso!', 'success')
-        return redirect(url_for('produto.listar_produtos'))
-    
-    return render_template('novo_produto.html')
-
-@produto_routes.route('/produtos/editar/<int:id>', methods=['GET', 'POST'])
-def editar_produto(id):
-    produto = Produto.query.get_or_404(id)
-    
-    if request.method == 'POST':
-        produto.nome = request.form['nome']
-        produto.descricao = request.form['descricao']
-        produto.preco = float(request.form['preco'])
-        produto.quantidade = int(request.form['quantidade'])
-        
-        db.session.commit()
-        flash('Produto atualizado com sucesso!', 'success')
-        return redirect(url_for('produto.listar_produtos'))
-    
-    return render_template('editar_produto.html', produto=produto)
-
-@produto_routes.route('/produtos/excluir/<int:id>')
-def excluir_produto(id):
-    produto = Produto.query.get_or_404(id)
-    db.session.delete(produto)
-    db.session.commit()
-    
-    flash('Produto excluído com sucesso!', 'success')
-    return redirect(url_for('produto.listar_produtos'))
+@produto_bp.route('/produtos/<isbn>')
+def detalhes_livro(isbn):
+    livro = Livro.query.get_or_404(isbn)
+    return render_template('detalhes_livro.html', livro=livro)
