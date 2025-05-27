@@ -1,5 +1,8 @@
 # Morganum Libris
-![logotipo do Morganum Libris: letras escritas à mão com o primeiro 'M' estilizado parecendo um livro aberto.](static/assets/morganum_libris_logo.png)
+<div align="center">
+  <img src="static/assets/morganum_libris_logo.png" height="400" alt="Morganum Libris">
+</div>
+
  Aplicação web "mobile first" feita para melhor organizar hábitos de leitura.
  ## Features:
  * Sistema de busca em banco de dados MySQL, fazendo consultas de forma simples e dinâmica;
@@ -11,4 +14,6 @@
  * *models.py*: arquivo contendo todos o modelo de objeto padrão do banco de dados;
  * *popular_livros.py*: programa que utiliza API para popular o banco de dados com informações sobre livros.
  
-![ícone do Morganum: 'M' estilizado parecendo um livro aberto.](static/assets/libris_icon.png)
+<div align="center">
+  <img src="static/assets/libris_icon.png" height="200" alt="Morganum Libris">
+</div>
