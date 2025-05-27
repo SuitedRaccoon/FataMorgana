@@ -2,8 +2,12 @@
 Repositório dedicado ao grupo Fata Morgana para confecção de aplicativos ao longo do curso de Ciência da Computação do Centro Universitário UDF.
 
 ## Morganum Libris
-![logotipo do Morganum Libris: letras escritas à mão com o primeiro 'M' estilizado parecendo um livro aberto.](Morganum_Libris/static/assets/morganum_libris_logo.png)
+<div align="center">
+  <img src="Morganum_Libris/static/assets/morganum_libris_logo.png" height="350" alt="Morganum Libris">
+</div>
+
  Aplicação web "mobile first" feita para melhor organizar hábitos de leitura.
+ 
  ### Features:
  * Sistema de busca em banco de dados MySQL, fazendo consultas de forma simples e dinâmica;
  * Criação e costumização de listas de livros para ler futuramente;
@@ -11,8 +15,11 @@ Repositório dedicado ao grupo Fata Morgana para confecção de aplicativos ao l
 
 
 ## Morganum (Em Desenvolvimento)
-![logotipo do Morganum: letras escritas à mão com o primeiro 'M' estilizado parecendo um livro aberto.](Morganum/app/static/assets/morganum_logo.png)
+<div align="center">
+  <img src="Morganum/app/static/assets/morganum_logo.png" height="350" alt="Morganum">
+</div>
  Aplicação web simulando um sistema de uma livraria.
+ 
  ### Features:
  * Sistema de login para clientes e funcionários;
  * Banco de dados com estoque da Livraria, assim como informações de usuários;
