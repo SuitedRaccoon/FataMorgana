@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+{% block content %}
+<h2>{{ list.name }} {% if list.is_public %}<small>(public){% endif %}</small></h2>
+<ul class="list-group mb-4">
+  {% for book in books %}
+    <li class="list-group-item d-flex justify-content-between align-items-center">
+      <div>{{ loop.index }}. <strong>{{ book.title }}</strong> by {{ book.author }}</div>
+      <div class="btn-group">
+        <button class="btn btn-sm btn-outline-secondary"
+                onclick="move('{{ book.id }}','up')">↑</button>
+        <button class="btn btn-sm btn-outline-secondary"
+                onclick="move('{{ book.id }}','down')">↓</button>
+      </div>
+    </li>
+  {% endfor %}
+</ul>
+
+<script>
+  function move(bookId, dir){
+    fetch('/lists/{{ list.id }}/move', {
+      method:'POST',
+      headers:{'Content-Type':'application/x-www-form-urlencoded'},
+      body:`list_id={{ list.id }}&book_id=${bookId}&direction=${dir}`
+    }).then(_=> location.reload());
+  }
+</script>
+{% endblock %}

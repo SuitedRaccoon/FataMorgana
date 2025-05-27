@@ -1,0 +1,36 @@
+h3 {
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 5px;
+  margin-bottom: 10px;
+}
+
+/* Cores personalizadas por status */
+.list-group-item-info    { background-color: #e7f1fa; }
+.list-group-item-primary { background-color: #f0f8ff; }
+.list-group-item-success { background-color: #e0fbe0; }
+.list-group-item-warning { background-color: #fff7e6; }
+#search-results { top: 100%; }
+
+.navbar-brand .libris {
+    font-family: 'Sacramento', cursive;
+    color: #FF00CC;
+    font-size: 2.0rem;
+    line-height: 1;
+}
+
+.btn-collapse {
+  width: 1.5rem;
+  padding: 0;
+  position: relative;
+}
+
+.btn-collapse::after {
+  content: '>';
+  display: inline-block;
+  transition: transform 0.2s;
+  font-weight: bold;
+}
+
+.btn-collapse:not(.collapsed)::after {
+  content: 'v';
+}
