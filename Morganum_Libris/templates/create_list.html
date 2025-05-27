@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block content %}
+<form method="post" class="w-50 mx-auto">
+  <div class="mb-3">
+    <label class="form-label">List Name</label>
+    <input name="name" class="form-control" required>
+  </div>
+  <div class="form-check mb-3">
+    <input name="is_public" type="checkbox" class="form-check-input" id="pub">
+    <label class="form-check-label" for="pub">Make this list public</label>
+  </div>
+  <button class="btn btn-success">Create List</button>
+</form>
+{% endblock %}

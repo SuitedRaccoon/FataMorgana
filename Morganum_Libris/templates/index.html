@@ -1,0 +1,121 @@
+{# templates/index.html #}
+{% extends "layout.html" %}
+{% block content %}
+  <!-- READING QUEUE -->
+  <section>
+    <h2 class="mb-3">📖 Minha Fila de Leitura</h2>
+    {% for status, livros in livros_por_status.items() %}
+      {% if livros %}
+        {% set cid = 'collapse-' ~ status %}
+        <div class="card mb-3">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+              {% if status=='reading'   %}📘 Lendo Agora{% endif %}
+              {% if status=='planned'   %}📝 Planejado{% endif %}
+              {% if status=='completed' %}✅ Concluído{% endif %}
+              {% if status=='skipped'   %}⏩ Ignorado{% endif %}
+            </h5>
+            <button class="btn btn-sm btn-outline-secondary btn-collapse collapsed"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#{{ cid }}"
+                    aria-controls="{{ cid }}"
+                    aria-expanded="false"></button>
+          </div>
+          <div id="{{ cid }}" class="collapse show">
+            <ul class="list-group list-group-flush">
+              {% for livro in livros %}
+                <li class="list-group-item d-flex justify-content-between align-items-center
+                  {% if status=='reading'   %}list-group-item-info{% endif %}
+                  {% if status=='planned'   %}list-group-item-primary{% endif %}
+                  {% if status=='completed' %}list-group-item-success{% endif %}
+                  {% if status=='skipped'   %}list-group-item-warning{% endif %}">
+                  <div>
+                    <strong>{{ livro.titulo }}</strong> por {{ livro.autor }}
+                    <small class="text-muted">({{ livro.genero }}, {{ livro.ano_publicacao }})</small>
+                  </div>
+                  <div class="btn-group">
+                    {% if status!='completed' %}
+                      <a href="{{ url_for('atualizar_status', user_id=1, book_id=livro.id, status='completed') }}"
+                         class="btn btn-sm btn-outline-success" title="Concluído">✔️</a>
+                    {% endif %}
+                    {% if status!='skipped' %}
+                      <a href="{{ url_for('atualizar_status', user_id=1, book_id=livro.id, status='skipped') }}"
+                         class="btn btn-sm btn-outline-warning" title="Ignorado">⏭</a>
+                    {% endif %}
+                    {% if status!='reading' %}
+                      <a href="{{ url_for('atualizar_status', user_id=1, book_id=livro.id, status='reading') }}"
+                         class="btn btn-sm btn-outline-info" title="Lendo">📖</a>
+                    {% endif %}
+                    {% if status!='planned' %}
+                      <a href="{{ url_for('atualizar_status', user_id=1, book_id=livro.id, status='planned') }}"
+                         class="btn btn-sm btn-outline-primary" title="Planejado">📝</a>
+                    {% endif %}
+                  </div>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </section>
+
+  <hr class="my-5">
+
+  <!-- SAVED LISTS -->
+  <section>
+    <h2 class="mb-3">📂 Minhas Listas Salvas</h2>
+    {% if listas_salvas %}
+      {% for lista in listas_salvas %}
+        {% set cid_lst = 'collapse-list-' ~ lista.id %}
+        <div class="card mb-3">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">{{ lista.nome }}</h5>
+            <button class="btn btn-sm btn-outline-secondary btn-collapse collapsed"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#{{ cid_lst }}"
+                    aria-controls="{{ cid_lst }}"
+                    aria-expanded="false"></button>
+          </div>
+          <div id="{{ cid_lst }}" class="collapse">
+            <ul class="list-group list-group-flush">
+                {% for livro in lista.livros %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <div>
+                        <strong>{{ livro.titulo }}</strong> por {{ livro.autor }}
+                        <small class="text-muted">({{ livro.genero }}, {{ livro.ano_publicacao }})</small>
+                        </div>
+
+                        <div class="btn-group">
+                        <!-- existing “➕ Fila” button -->
+                        <form action="{{ url_for('add_to_queue', book_id=livro.id) }}"
+                                method="post"
+                                class="form-adicionar-lista"
+                                data-status="planned"
+                                data-title="{{ livro.titulo }}">
+                            <button type="button" class="btn btn-sm btn-outline-primary btn-adicionar-lista">
+                            ➕ Fila
+                            </button>
+                        </form>
+
+                        <!-- NEW: Remove from saved list -->
+                        <form action="{{ url_for('remover_da_lista', lista_id=lista.id, livro_id=livro.id) }}"
+                                method="post" class="ms-1">
+                            <button type="submit"
+                                    class="btn btn-sm btn-outline-danger"
+                                    title="Remover desta lista">
+                            🗑️
+                            </button>
+                        </form>
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+          </div>
+        </div>
+      {% endfor %}
+    {% else %}
+      <p class="text-muted">Nenhuma lista salva. Crie uma em “+ Nova Lista”.</p>
+    {% endif %}
+  </section>
+{% endblock %}
