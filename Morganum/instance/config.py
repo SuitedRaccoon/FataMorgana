@@ -1,14 +1,34 @@
 # instance/config.py
 import os
 
-# Configurações do MySQL - ATUALIZE COM SEUS DADOS
-MYSQL_USER = 'root'
-MYSQL_PASSWORD = '#Guga2010'
-MYSQL_HOST = 'localhost'  # ou IP do servidor
-MYSQL_DB = 'morganum'
-
-SQLALCHEMY_DATABASE_URI = f'mysql+pymysql://{MYSQL_USER}:{MYSQL_PASSWORD}@{MYSQL_HOST}/{MYSQL_DB}'
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(BASE_DIR, 'morganum.db')
 SQLALCHEMY_TRACK_MODIFICATIONS = False
-SECRET_KEY = '#Guga2010'  # Gere uma chave segura
+SECRET_KEY = 'morgana'  # Troque por uma chave segura
 
-# MySQL connection string => sqlalchemy.url = 'mysql+pymysql://gustavosaud@gmail.com:#Guga2010@localhost/morganum'
+__init__.py
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
+
+db = SQLAlchemy()
+migrate = Migrate()
+
+def create_app():
+    app = Flask(__name__)
+    app.config.from_pyfile('../instance/config.py')
+    
+    
+    # Inicializa extensões
+    db.init_app(app)
+    migrate.init_app(app, db)
+    
+    # Importa e registra blueprints
+    from .routes import main_bp, produto_bp
+    app.register_blueprint(main_bp)
+    app.register_blueprint(produto_bp)
+    
+    # Importa models explicitamente
+    from . import models
+    
+    return app
