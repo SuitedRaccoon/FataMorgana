@@ -1,3 +1,0 @@
-* text=auto
-*.{html,py,md,txt,css,js,json,xml} text eol=lf
-*.{png,jpg,jpeg,gif,ico,svg} binary
