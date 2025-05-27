@@ -4,3 +4,5 @@ morg/
 tests/
 instance/
 config.py
+.gitignore
+.gitattributes
