@@ -1,7 +1,8 @@
-# Morganum Libris
 <div align="center">
-  <img src="static/assets/morganum_libris_logo.png" height="400" alt="Morganum Libris">
+  <img src="static/assets/morganum_libris_logo.png" height="350" alt="Morganum Libris">
 </div>
+
+# Morganum Libris
 
  Aplicação web "mobile first" feita para melhor organizar hábitos de leitura.
  ## Features:
