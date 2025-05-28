@@ -45,19 +45,20 @@ def inicio():
         livros_por_status[r['status']].append(r)
 
     # 2) Fetch saved lists
-    cur.execute("""
+        cur.execute("""
         SELECT sl.id    AS lista_id,
                sl.name  AS nome_lista,
                b.id      AS livro_id,
                b.title   AS titulo,
                b.author  AS autor,
                b.genre   AS genero,
-               b.year_published AS ano_publicacao
+               b.year_published AS ano_publicacao,
+               b.isbn  AS isbn
           FROM saved_lists sl
           JOIN saved_list_books slb ON sl.id = slb.list_id
           JOIN books b ON b.id = slb.book_id
          WHERE sl.user_id = %s
-         ORDER BY sl.id, slb.position
+         ORDER BY sl.id, b.title
     """, (user_id,))
     rows = cur.fetchall()
     listas_salvas = []
@@ -71,7 +72,8 @@ def inicio():
             'titulo': r['titulo'],
             'autor': r['autor'],
             'genero': r['genero'],
-            'ano_publicacao': r['ano_publicacao']
+            'ano_publicacao': r['ano_publicacao'],
+            'isbn': r['isbn']
         })
 
     cur.close()
