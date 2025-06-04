@@ -16,8 +16,15 @@
                 {% if status=='completed' %}✅ Concluído{% endif %}
                 {% if status=='skipped'   %}⏩ Ignorado{% endif %}
               </h5>
-              <form method="post" action="{{ url_for('limpar_etapa_fila', status=status) }}" onsubmit="return confirmarLimpezaFila('{{ status }}');">
-                <button type="submit" class="btn btn-sm btn-outline-danger ms-2" title="Esvaziar etapa">
+              <form id="form-limpar-{{ status }}" method="post"
+                    action="{{ url_for('limpar_etapa_fila', etapa=status) }}"
+                    onsubmit="return false;">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-danger"
+                  data-confirm-msg="Deseja esvaziar a etapa '{{ status }}' da fila?"
+                  data-form-id="form-limpar-{{ status }}"
+                  onclick="confirmarPorDataset(this)">
                   🧹
                 </button>
               </form>
@@ -79,8 +86,15 @@
           <div class="card-header d-flex justify-content-between">
             <div class="d-flex align-items-center">
               <h5 class="mb-0">{{ lista.nome }}</h5>
-              <form method="post" action="{{ url_for('excluir_lista', lista_id=lista.id) }}" onsubmit="return confirmarExclusaoLista();">
-                <button type="submit" class="btn btn-sm btn-outline-danger ms-2" title="Excluir lista">
+              <form id="form-excluir-{{ lista.id }}" method="post"
+                    action="{{ url_for('excluir_lista', lista_id=lista.id) }}"
+                    onsubmit="return false;">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-danger"
+                  data-confirm-msg="Deseja excluir a lista '{{ lista.nome }}'?"
+                  data-form-id="form-excluir-{{ lista.id }}"
+                  onclick="confirmarPorDataset(this)">
                   🗑️
                 </button>
               </form>
@@ -103,16 +117,11 @@
                       <small class="text-muted">({{ livro.genero }}, {{ livro.ano_publicacao }})</small>
                     </div>
                     <div class="btn-group">
-                      <form action="{{ url_for('add_to_queue', book_id=livro.id) }}"
-                            method="post"
-                            class="form-adicionar-lista"
-                            data-status="planned"
-                            data-title="{{ livro.titulo }}">
-                        <button type="button" class="btn btn-sm btn-outline-primary btn-adicionar-lista">
-                          ➕ Fila
-                        </button>
-                      </form>
-
+                      <button type="button"
+                              class="btn btn-sm btn-outline-primary btn-fila"
+                              data-book-id="{{ livro.id }}">
+                        ➕ Fila
+                      </button>
                       <form action="{{ url_for('remover_da_lista', lista_id=lista.id, livro_id=livro.id) }}"
                             method="post" class="ms-1">
                         <button type="submit"

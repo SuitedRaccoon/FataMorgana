@@ -41,3 +41,18 @@ h3 {
   border: 1px solid #ddd;
   border-radius: 0 0 .5rem .5rem;
 }
+
+@media (max-width: 425px) {
+  .custom-container {
+    max-width: 100% !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+}
+
+@media (min-width: 426px) {
+  .custom-container {
+    max-width: 680px !important;
+    margin: 0 auto;
+  }
+}

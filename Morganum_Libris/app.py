@@ -247,20 +247,16 @@ def excluir_lista(lista_id):
     db.close()
     return redirect(url_for('inicio'))
 
-@app.route('/fila/limpar/<status>', methods=['POST'])
-def limpar_etapa_fila(status):
+@app.route('/fila/limpar/<etapa>', methods=['POST'])
+def limpar_etapa_fila(etapa):
     user_id = 1
-    if status not in ['reading', 'planned', 'completed', 'skipped']:
-        return "Status inválido", 400
-
     db = conectar_bd()
     cur = db.cursor()
-    cur.execute("DELETE FROM user_books WHERE user_id=%s AND status=%s", (user_id, status))
+    cur.execute("DELETE FROM user_books WHERE user_id = %s AND status = %s", (user_id, etapa))
     db.commit()
     cur.close()
     db.close()
     return redirect(url_for('inicio'))
-
 
 if __name__ == '__main__':
     app.run(debug=True)
