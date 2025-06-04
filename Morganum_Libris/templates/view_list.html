@@ -6,9 +6,9 @@
     <li class="list-group-item d-flex justify-content-between align-items-center">
       <div>{{ loop.index }}. <strong>{{ book.title }}</strong> by {{ book.author }}</div>
       <div class="btn-group">
-        <button class="btn btn-sm btn-outline-secondary"
+        <button type="button" class="btn btn-sm btn-outline-secondary"
                 onclick="move('{{ book.id }}','up')">↑</button>
-        <button class="btn btn-sm btn-outline-secondary"
+        <button type="button" class="btn btn-sm btn-outline-secondary"
                 onclick="move('{{ book.id }}','down')">↓</button>
       </div>
     </li>
