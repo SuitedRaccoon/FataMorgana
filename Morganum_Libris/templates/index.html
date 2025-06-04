@@ -1,7 +1,7 @@
 {# templates/index.html #}
 {% extends "layout.html" %}
 {% block content %}
-  <!-- READING QUEUE -->
+  <!-- Fila de Leitura -->
   <section>
     <h2 class="mb-3">📖 Minha Fila de Leitura</h2>
     {% for status, livros in livros_por_status.items() %}
@@ -9,19 +9,33 @@
         {% set cid = 'collapse-' ~ status %}
         <div class="card mb-3">
           <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">
-              {% if status=='reading'   %}📘 Lendo Agora{% endif %}
-              {% if status=='planned'   %}📝 Planejado{% endif %}
-              {% if status=='completed' %}✅ Concluído{% endif %}
-              {% if status=='skipped'   %}⏩ Ignorado{% endif %}
-            </h5>
-            <button class="btn btn-sm btn-outline-secondary btn-collapse collapsed"
+            <div class="d-flex align-items-center">
+              <h5 class="mb-0 me-3">
+                {% if status=='reading'   %}📘 Lendo Agora{% endif %}
+                {% if status=='planned'   %}📝 Planejado{% endif %}
+                {% if status=='completed' %}✅ Concluído{% endif %}
+                {% if status=='skipped'   %}⏩ Ignorado{% endif %}
+              </h5>
+              <form id="form-limpar-{{ status }}" method="post"
+                    action="{{ url_for('limpar_etapa_fila', etapa=status) }}"
+                    onsubmit="return false;">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-danger"
+                  data-confirm-msg="Deseja esvaziar a etapa '{{ status }}' da fila?"
+                  data-form-id="form-limpar-{{ status }}"
+                  onclick="confirmarPorDataset(this)">
+                  🧹
+                </button>
+              </form>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-secondary btn-collapse collapsed"
                     data-bs-toggle="collapse"
                     data-bs-target="#{{ cid }}"
                     aria-controls="{{ cid }}"
                     aria-expanded="false"></button>
           </div>
-          <div id="{{ cid }}" class="collapse show">
+          <div id="{{ cid }}" class="collapse {% if status == 'reading' %}show{% endif %}">
             <ul class="list-group list-group-flush">
               {% for livro in livros %}
                 <li class="list-group-item d-flex justify-content-between align-items-center
@@ -62,54 +76,68 @@
 
   <hr class="my-5">
 
-  <!-- SAVED LISTS -->
+  <!-- Listas Salvas -->
   <section>
     <h2 class="mb-3">📂 Minhas Listas Salvas</h2>
     {% if listas_salvas %}
       {% for lista in listas_salvas %}
         {% set cid_lst = 'collapse-list-' ~ lista.id %}
         <div class="card mb-3">
-          <div class="card-header d-flex justify-content-between align-items-center">
-            <h5 class="mb-0">{{ lista.nome }}</h5>
-            <button class="btn btn-sm btn-outline-secondary btn-collapse collapsed"
+          <div class="card-header d-flex justify-content-between">
+            <div class="d-flex align-items-center">
+              <h5 class="mb-0">{{ lista.nome }}</h5>
+              <form id="form-excluir-{{ lista.id }}" method="post"
+                    action="{{ url_for('excluir_lista', lista_id=lista.id) }}"
+                    onsubmit="return false;">
+                <button
+                  type="button"
+                  class="btn btn-sm btn-outline-danger"
+                  data-confirm-msg="Deseja excluir a lista '{{ lista.nome }}'?"
+                  data-form-id="form-excluir-{{ lista.id }}"
+                  onclick="confirmarPorDataset(this)">
+                  🗑️
+                </button>
+              </form>
+            </div>
+            <div class="p-2">
+              <button type="button" class="btn btn-sm btn-outline-secondary btn-collapse collapsed"
                     data-bs-toggle="collapse"
                     data-bs-target="#{{ cid_lst }}"
                     aria-controls="{{ cid_lst }}"
                     aria-expanded="false"></button>
+            </div>
           </div>
           <div id="{{ cid_lst }}" class="collapse">
             <ul class="list-group list-group-flush">
+              {% if lista.livros %}
                 {% for livro in lista.livros %}
-                    <li class="list-group-item d-flex justify-content-between align-items-center">
-                        <div>
-                        <strong>{{ livro.titulo }}</strong> por {{ livro.autor }}
-                        <small class="text-muted">({{ livro.genero }}, {{ livro.ano_publicacao }})</small>
-                        </div>
-
-                        <div class="btn-group">
-                        <!-- existing “➕ Fila” button -->
-                        <form action="{{ url_for('add_to_queue', book_id=livro.id) }}"
-                                method="post"
-                                class="form-adicionar-lista"
-                                data-status="planned"
-                                data-title="{{ livro.titulo }}">
-                            <button type="button" class="btn btn-sm btn-outline-primary btn-adicionar-lista">
-                            ➕ Fila
-                            </button>
-                        </form>
-
-                        <!-- NEW: Remove from saved list -->
-                        <form action="{{ url_for('remover_da_lista', lista_id=lista.id, livro_id=livro.id) }}"
-                                method="post" class="ms-1">
-                            <button type="submit"
-                                    class="btn btn-sm btn-outline-danger"
-                                    title="Remover desta lista">
-                            🗑️
-                            </button>
-                        </form>
-                        </div>
-                    </li>
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                      <strong>{{ livro.titulo }}</strong> por {{ livro.autor }}
+                      <small class="text-muted">({{ livro.genero }}, {{ livro.ano_publicacao }})</small>
+                    </div>
+                    <div class="btn-group">
+                      <button type="button"
+                              class="btn btn-sm btn-outline-primary btn-fila"
+                              data-book-id="{{ livro.id }}">
+                        ➕ Fila
+                      </button>
+                      <form action="{{ url_for('remover_da_lista', lista_id=lista.id, livro_id=livro.id) }}"
+                            method="post" class="ms-1">
+                        <button type="submit"
+                                class="btn btn-sm btn-outline-danger"
+                                title="Remover desta lista">
+                          🗑️
+                        </button>
+                      </form>
+                    </div>
+                  </li>
                 {% endfor %}
+              {% else %}
+                <li class="list-group-item text-muted text-center">
+                  📭 Lista vazia
+                </li>
+              {% endif %}
             </ul>
           </div>
         </div>
