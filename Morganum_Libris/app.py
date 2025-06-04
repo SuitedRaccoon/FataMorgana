@@ -6,7 +6,7 @@ from config import MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB
 app = Flask(__name__)
 
 def conectar_bd():
-    """Connect to MySQL and return the connection."""
+    # Conecta ao MySQL retorna a conexão
     return MySQLdb.connect(
         host=MYSQL_HOST,
         user=MYSQL_USER,
@@ -15,9 +15,8 @@ def conectar_bd():
         charset='utf8mb4'
     )
 
-@app.route('/')
+@app.route('/') # Rota para a página inicial do Morganum Libris
 def inicio():
-
     db = conectar_bd()
     cur = db.cursor(MySQLdb.cursors.DictCursor)
     user_id = 1  
